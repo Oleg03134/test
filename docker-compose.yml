@@ -7,7 +7,7 @@ services:
     ports:
       - "80:80"
     links:
-      - php-fpm
+      - wordpress
     volumes:
       - ./nginx/default:/etc/nginx/sites-available/default
       - ./nginx/default:/etc/nginx/sites-enabled/default
@@ -17,9 +17,10 @@ services:
     environment:
       - EMPLOYEE_NAME=test
   wordpress:
-    build:
-      context: .
-      dockerfile: .wordpress/Dockerfile
+    image: wordpress:php7.3-fpm
+#    build:
+#      context: .
+#      dockerfile: .wordpress/Dockerfile
     ports:
       - "9000:9000"
     volumes:
