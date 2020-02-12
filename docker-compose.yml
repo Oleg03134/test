@@ -1,8 +1,9 @@
 version: "3.1"
 services:
-
   nginx:
-    image: tutum/nginx
+    build:
+      context: .
+      dockerfile: .nginx/Dockerfile
     ports:
       - "80:80"
     links:
@@ -13,11 +14,12 @@ services:
 
       - ./logs/nginx-access.log:/var/log/nginx/access.log
       - ./logs/nginx-error.log:/var/log/nginx/error.log
-
-  php-fpm:
+    environment:
+      - EMPLOYEE_NAME=test
+  wordpress:
     build:
       context: .
-      dockerfile: .php-fpm/Dockerfile
+      dockerfile: .wordpress/Dockerfile
     ports:
       - "9000:9000"
     volumes:
@@ -36,3 +38,10 @@ services:
       - MYSQL_PASSWORD=123456
     ports:
       - "3306:3306"
+  adminer:
+    image: adminer
+    restart: always
+    ports:
+      - 8080:8080
+    links:
+      - mysql
